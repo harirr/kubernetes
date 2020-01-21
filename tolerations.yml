@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: taint-demo-deploy
+  labels: 
+    name: rs-label-1
+    type: back-end
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxUnavailable: 1 
+  template: 
+    metadata:
+      name: demo
+      labels:
+        name: rs-label
+        type: back-end
+    spec:
+      tolerations:
+      - key: "taintDemo"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      containers:
+        - name: myapp-demo
+          image: kulbhushanmayer/genesys:1.0 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      name: rs-label
+      type: back-end
+

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: demo-deploy
+  labels: 
+    name: rs-label-1
+    type: back-end
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+       maxUnavailable: 1 
+  template: 
+
+
+    metadata:
+      name: demo
+      labels:
+        name: rs-label
+        type: back-end
+
+    spec:
+      containers:
+        - name: myapp-demo
+          image: yogeshraheja/yogeshk8stest 
+      nodeSelector:
+        type: back-end
+        tier: front-end
+  replicas: 4 
+  selector: 
+    matchLabels: 
+      name: rs-label
+      type: back-end
+
